@@ -1,0 +1,22 @@
+body {
+    background: lavender;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: monospace;
+}
+
+img {
+    height: 150px;
+}
+
+h1 {
+   background: skyblue;
+   margin-left: 10%;
+   margin-right: 10%;
+   margin-bottom: 30px;
+   padding: 10px;
+   width: 70%;
+   height: 150px;
+}
