@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let userInput = document.querySelector("#userInput");
     let submit = document.querySelector("submit");
     let filmInfo = document.querySelector("#filmInfo");
+    let ul = document.querySelector("#submittedReview");
 
     const getMovie = async () => {
         try {
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     getMovie();
 
     select.addEventListener("change", async (e) => {
-        select.value = e.target.value;
+        // select.value = e.target.value;
         let movie = await getMovie();
         let title = document.createElement("h3");
         title.innerText = movie.title;
@@ -41,8 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
     })
 
-
-    // submit.addEventListener("click", () => {
-
-    // })
+    submit.addEventListener("click", (e) => {
+        // let review = document.createElement("li");
+        // review.innerText = e.target.value;
+        // ul.appendChild(review);
+    })
 })
