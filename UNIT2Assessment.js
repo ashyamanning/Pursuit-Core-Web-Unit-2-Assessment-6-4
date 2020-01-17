@@ -6,14 +6,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     let filmInfo = document.querySelector("#filmInfo");
     let ul = document.querySelector("#submittedReview");
 
-    const getMovie = async () => {
+    const getMovies = async () => {
         try {
             filmInfo.innerHTML = "";
             let res = await axios.get("https://ghibliapi.herokuapp.com/films");
             let movieArr = res.data;
-            movieArr.forEach(movie => {
+            movieArr.forEach((movie, i) => {
                 let option = document.createElement("option");
                 option.innerText = movie.title;
+                option.value = i;
+                // option.setAttribute("data-release-date", movie.release_date);
+                // option.setAttribute("data-description", movie.description);
                 select.appendChild(option);
             })
             return res.data;
@@ -22,11 +25,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
     
-    getMovie();
+    getMovies();
 
     select.addEventListener("change", async (e) => {
         // select.value = e.target.value;
-        let movie = await getMovie();
+        console.log(e.target.value);
+        let movieArr = await getMovies();
+        let movie = movieArr[e.target.value];
         let title = document.createElement("h3");
         title.innerText = movie.title;
         filmInfo.appendChild(title);
@@ -43,8 +48,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
 
     submit.addEventListener("click", (e) => {
-        // let review = document.createElement("li");
-        // review.innerText = e.target.value;
-        // ul.appendChild(review);
+        let review = document.createElement("li");
+        review.innerText = e.target.value;
+        ul.appendChild(review);
     })
 })
