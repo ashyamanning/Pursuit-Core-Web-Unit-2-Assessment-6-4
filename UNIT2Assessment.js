@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let select = document.querySelector("select");
     let form = document.querySelector("form");
     let userInput = document.querySelector("#userInput");
-    let submit = document.querySelector("submit");
+    let submit = document.querySelector("#submit");
     let filmInfo = document.querySelector("#filmInfo");
     let ul = document.querySelector("#submittedReview");
 
@@ -10,26 +10,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             filmInfo.innerHTML = "";
             let res = await axios.get("https://ghibliapi.herokuapp.com/films");
-            let movieArr = res.data;
-            movieArr.forEach((movie, i) => {
-                let option = document.createElement("option");
-                option.innerText = movie.title;
-                option.value = i;
-                // option.setAttribute("data-release-date", movie.release_date);
-                // option.setAttribute("data-description", movie.description);
-                select.appendChild(option);
-            })
             return res.data;
         } catch (error) {
             console.log(error)
         }
     }
     
-    getMovies();
+    const setSelectOptions = async () => {
+        let movieArr = await getMovies();
+        movieArr.forEach((movie, i) => {
+            let option = document.createElement("option");
+            option.innerText = movie.title;
+            option.value = i;
+            // option.setAttribute("data-release-date", movie.release_date);
+            // option.setAttribute("data-description", movie.description);
+            select.appendChild(option);
+        })
+    }
+
+    setSelectOptions();
 
     select.addEventListener("change", async (e) => {
         // select.value = e.target.value;
-        console.log(e.target.value);
+        // console.log(e.target.value);
         let movieArr = await getMovies();
         let movie = movieArr[e.target.value];
         let title = document.createElement("h3");
@@ -47,9 +50,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
     })
 
-    submit.addEventListener("click", (e) => {
+    submit.addEventListener("click", () => {
         let review = document.createElement("li");
-        review.innerText = e.target.value;
+        review.innerText = userInput.value;
         ul.appendChild(review);
+        userInput.value = "";
     })
 })
