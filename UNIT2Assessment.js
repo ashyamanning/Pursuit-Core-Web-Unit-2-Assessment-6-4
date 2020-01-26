@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let select = document.querySelector("select");
     let form = document.querySelector("form");
     let userInput = document.querySelector("#userInput");
-    let submit = document.querySelector("#submit");
     let filmInfo = document.querySelector("#filmInfo");
     let ul = document.querySelector("#submittedReview");
+    let errorMessage = document.createElement("p");
 
     const getMovies = async () => {
         try {
@@ -30,11 +30,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     setSelectOptions();
 
+    let movie;
+
     select.addEventListener("change", async (e) => {
-        // select.value = e.target.value;
-        // console.log(e.target.value);
         let movieArr = await getMovies();
-        let movie = movieArr[e.target.value];
+        movie = movieArr[e.target.value];
         let title = document.createElement("h3");
         title.innerText = movie.title;
         filmInfo.appendChild(title);
@@ -44,16 +44,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         let description = document.createElement("p");
         description.innerText = movie.description;
         filmInfo.appendChild(description);
+        // ul.innerHTML = "";
     })
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
+        if (userInput.value && movie.title) {
+            errorMessage.innerText = "";
+            let review = document.createElement("li");
+            review.innerText = `${movie.title}: ${userInput.value}`;
+            userInput.value = "";
+            ul.appendChild(review);
+        } else {
+            errorMessage.innerText = "Please enter a valid review!"
+            ul.appendChild(errorMessage);
+
+        }
+        
     })
 
-    submit.addEventListener("click", () => {
-        let review = document.createElement("li");
-        review.innerText = userInput.value;
-        ul.appendChild(review);
-        userInput.value = "";
-    })
+    // submit.addEventListener("click", () => {
+    //     // select.value = e.currentTarget.value;
+    //     // console.log(e.currentTarget);
+    //     let review = document.createElement("li");
+    //     review.innerText = `${movie.title}: ${userInput.value}`;
+    //     ul.appendChild(review);
+    //     userInput.value = "";
+    // })
 })
